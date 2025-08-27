@@ -19,12 +19,29 @@
     <a href="../index.html">Back</a>
     <?php
         echo "\n";
+        $conn = DB::getConnection();
+        $sql = 'SELECT media.MediaID, media.Name, media.Rating, media.Length, 
+                SUM(IF(media.MediaID = user_watched_media.MediaID AND user_watched_media.UserID = 1, 1, 0)) AS "Maddie status",
+                SUM(IF(media.MediaID = user_watched_media.MediaID AND user_watched_media.UserID = 2, 1, 0)) AS "Andrea status"
+                FROM `media`
+                LEFT JOIN user_watched_media ON media.MediaID = user_watched_media.MediaID
+                GROUP BY media.MediaID;';
+        $result = $conn->query($sql);
+        
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         $content = [
-            new Game("Cult of the Lamb", 82, TRUE, FALSE, 19.5),
-            new Game("Minecraft", 93, TRUE, TRUE, -1),
-            new Movie("Winter on Fire", 83, FALSE, TRUE, 102),
-            new TvShow("Konosuba", 78, FALSE, FALSE, 24, 34)
+            new Game($row["Name"], $row["Rating"], $row["Maddie status"], $row["Andrea status"], $row["Length"]), 
         ];
+
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        array_push($content, new Game($row["Name"], $row["Rating"], $row["Maddie status"], $row["Andrea status"], $row["Length"]));
+
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        array_push($content, new Movie($row["Name"], $row["Rating"], $row["Maddie status"], $row["Andrea status"], $row["Length"]));
+
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        array_push($content, new TvShow($row["Name"], $row["Rating"], $row["Maddie status"], $row["Andrea status"], $row["Length"], 34));
+        
         echo "<table>
                 <tr>
                     <th>Name</th>
@@ -37,6 +54,6 @@
         foreach ($content as $media) {
             echo $media->generateRow();
         }
-        echo "</table>"
+        echo "</table>";
     ?>
 </body>

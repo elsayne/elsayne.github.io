@@ -5,7 +5,7 @@
         public function __construct(string $name, int $rating, bool $maddieStatus, bool $andreaStatus, int $minutes,)
         {
             parent::__construct($name, $rating, $maddieStatus, $andreaStatus);
-            $this->minutes = $minutes;
+            $this->minutes = $minutes;      //length in IMDb
         }
 
         protected function getRatingCell(): string

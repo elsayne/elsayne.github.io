@@ -8,7 +8,7 @@
             $password = ',XM&T"KQ}R6eB):';
             if (self::$conn == null) {
                 try {
-                    $db = new PDO("mysql:host=$servername;dbname=watchlist", $username, $password);
+                    $db = new PDO("mysql:host=$servername;dbname=u540034987_Watchlist", $username, $password);
                     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     self::$conn = $db;
                     echo "Connected successfully";
